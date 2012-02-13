@@ -281,14 +281,21 @@ function squeeze_it(code) {
                 if (options.lift_vars) {
                         ast = time_it("lift", function(){ return pro.ast_lift_variables(ast); });
                 }
-                if (options.mangle) ast = time_it("mangle", function(){
-                        return pro.ast_mangle(ast, {
-                                toplevel     : options.mangle_toplevel,
-                                defines      : options.defines,
-                                except       : options.reserved_names,
-                                no_functions : options.no_mangle_functions
+                if (options.mangle) {
+                        ast = time_it("grab_this", function(){
+                                return pro.ast_grab_this(ast, {
+                                        flatten_bind : options.unsafe,
+                                })
                         });
-                });
+                        ast = time_it("mangle", function(){
+                                return pro.ast_mangle(ast, {
+                                        toplevel     : options.mangle_toplevel,
+                                        defines      : options.defines,
+                                        except       : options.reserved_names,
+                                        no_functions : options.no_mangle_functions
+                                })
+                        });
+                }
                 if (options.squeeze) ast = time_it("squeeze", function(){
                         ast = pro.ast_squeeze(ast, {
                                 make_seqs  : options.make_seqs,
