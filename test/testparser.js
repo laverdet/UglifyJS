@@ -1,11 +1,10 @@
 #! /usr/bin/env node
 
 var parseJS = require("../lib/parse-js");
-var sys = require("sys");
 
 // write debug in a very straightforward manner
 var debug = function(){
-        sys.log(Array.prototype.slice.call(arguments).join(', '));
+	console.log(Array.prototype.slice.call(arguments).join(', '));
 };
 
 ParserTestSuite(function(i, input, desc){
